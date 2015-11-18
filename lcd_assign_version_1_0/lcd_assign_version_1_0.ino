@@ -1,24 +1,23 @@
 #include <IRremote.h>
-
+#include <LiquidCrystal.h>
 
 #define BAUD 9600
-#include <LiquidCrystal.h>
-#define b1 9
-#define b2 8
-#define buzzer 10
+#define B2 9
+#define B1 8
+#define BUZZER 10
 #define LED 7
 
-#define POW FFA25D
-#define MODE FF629D
-#define MUTE FFE21D
-#define PREV FF22DD
-#define NEXT FF02FD
-#define PLAY/PAUSE FFC23D
-#define MINUS FFE01F
-#define PLUS FFA857
-#define EQ FF906F
-#define HUNDRED_PLUS FF9867
-#define RETURN FFB04F
+#define POW 0xFFA25D
+#define MODE 0xFF629D
+#define MUTE 0xFFE21D
+#define PREV 0xFF22DD
+#define NEXT 0xFF02FD
+#define PLAY/PAUSE 0xFFC23D
+#define MINUS 0xFFE01F
+#define PLUS 0xFFA857
+#define EQ 0xFF906F
+#define HUNDRED_PLUS 0xFF9867
+#define RETURN 0xFFB04F
 #define ZERO 0xFF6897
 #define ONE 0xFF30CF
 #define TWO 0xFF18E7
@@ -51,13 +50,13 @@ void setup()
   // set up the LCD's number of columns and rows: 
   lcd.begin(16, 2);
   
-  pinMode(b1, INPUT);
-  pinMode(b2, INPUT);
+  pinMode(B1, INPUT);
+  pinMode(B2, INPUT);
   
   irrecv.enableIRIn();
   pinMode(LED, OUTPUT);
-  pinMode(buzzer, OUTPUT);
-  digitalWrite(buzzer, LOW);
+  pinMode(BUZZER, OUTPUT);
+  digitalWrite(BUZZER, LOW);
   
   //Setup Timer 1 to interrupt every second
   cli();
@@ -77,7 +76,7 @@ void setPassword() {
   int newDigit;
   int newPass[4];
   
-   lcd.clear();
+  lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Set Pasword");
   
@@ -141,15 +140,13 @@ void setPassword() {
 }
 
 void setThreshold() {
-  
-
   lcd.print("Please enter a new threshold");
 }
 
 void loop() {
 
-     b1State = digitalRead(b1);
-     b2State = digitalRead(b2);
+     b1State = digitalRead(B1);
+     b2State = digitalRead(B2);
      
      if (b1State == HIGH) {
        hours++; 
@@ -173,8 +170,6 @@ void loop() {
      lcd.print(minutes, DEC);
      lcd.print(":");
      lcd.print(seconds, DEC);
-     
-     
      
      if (irrecv.decode(&results)) {
         if (results.value == ONE)
